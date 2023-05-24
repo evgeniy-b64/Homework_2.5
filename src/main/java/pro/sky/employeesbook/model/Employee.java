@@ -1,14 +1,17 @@
-package pro.sky.employeesbook;
+package pro.sky.employeesbook.model;
+
+import java.util.Objects;
 
 public class Employee {
     private String firstName;
 
     private String lastName;
 
-    public Employee(String firstName, String secondName, String lastName, int department, int salary) {          // конструктор класса Employee
+    public Employee(String firstName, String lastName) {  // конструктор класса Employee
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
     public void setFirstName(String firstName) {          // сеттер имени сотрудника
         this.firstName = firstName;
     }
@@ -26,17 +29,23 @@ public class Employee {
     }
 
     @Override
-    public String toString() {      // вывод всей информации о сотруднике
-        return lastName + " " + firstName;
-    }
-
-    @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(firstName, lastName);
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Employee employee = (Employee) obj;
+        return Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName);
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }
