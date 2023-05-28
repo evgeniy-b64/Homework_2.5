@@ -6,52 +6,55 @@ import pro.sky.employeesbook.exceptions.EmployeeNotFoundException;
 import pro.sky.employeesbook.exceptions.EmployeeStorageIsFullException;
 import pro.sky.employeesbook.model.Employee;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private static final int maxEmployeesNumber = 10;
-    private List<Employee> employeeList = new ArrayList<>();
+    private Map<String, Employee> employees = new HashMap<>();
 
+    private String makeKey(String firstName, String lastName) {
+        return firstName + lastName;
+    }
+
+    // добавление сотрудника
     public Employee addEmployee(String firstName, String lastName) {
         Employee employeeToAdd = new Employee(firstName, lastName);
-        if (employeeList.size() >= maxEmployeesNumber) {
-            throw new EmployeeStorageIsFullException();
+        if (employees.size() >= maxEmployeesNumber) {
+            throw new EmployeeStorageIsFullException();     // если штат заполнен
         }
-        if (employeeList.contains(employeeToAdd)) {
+        if (employees.containsValue(employeeToAdd)) {
             throw new EmployeeAlreadyAddedException("Сотрудник " + firstName + " " + lastName + " уже добавлен");
         }
-        employeeList.add(employeeToAdd);
+        String key = makeKey(firstName, lastName);
+        employees.put(key, employeeToAdd);
         System.out.printf("Сотрудник '%s %s' добавлен\n", employeeToAdd.getFirstName(), employeeToAdd.getLastName());
         return employeeToAdd;
     }
 
+    // удаление сотрудника
     public Employee deleteEmployee(String firstName, String lastName) {
-        String fullName = firstName + lastName;
         Employee employeeToDelete = new Employee(firstName, lastName);
-        if (!employeeList.contains(employeeToDelete)) {
+        if (!employees.containsValue(employeeToDelete)) {
             throw new EmployeeNotFoundException("Сотрудник " + firstName + " " + lastName + " не найден");
         }
-        employeeList.remove(employeeToDelete);
+        employees.remove(makeKey(firstName, lastName));
         System.out.printf("Сотрудник '%s %s' удалён\n", employeeToDelete.getFirstName(), employeeToDelete.getLastName());
         return employeeToDelete;
     }
 
+    // поиск сотрудника поимени и фамилии
     public Employee findByName(String firstName, String lastName) {
         Employee employeeToFind = new Employee(firstName, lastName);
-        if (employeeList.contains(employeeToFind)) {
+        if (employees.containsValue(employeeToFind)) {
             return employeeToFind;
         }
-        /*for (Employee employee : employeeList) {
-            if (firstName.equals(employee.getFirstName()) && lastName.equals(employee.getLastName())) {
-                return employee;
-            }
-        }*/
         throw new EmployeeNotFoundException("Сотрудник " + firstName + " " + lastName + " не найден");
     }
 
+    // вывод на экран полного списка сотрудников
     public List<Employee> printEmployeeList() {
-        return employeeList;
+        List<Employee> result = new ArrayList<>(employees.values());
+        return result;
     }
 }
