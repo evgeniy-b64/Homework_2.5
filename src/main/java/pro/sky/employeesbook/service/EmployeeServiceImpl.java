@@ -18,8 +18,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     // добавление сотрудника
-    public Employee addEmployee(String firstName, String lastName) {
-        Employee employeeToAdd = new Employee(firstName, lastName);
+    public Employee addEmployee(String firstName, String lastName, int department, int salary) {
+        Employee employeeToAdd = new Employee(firstName, lastName, department, salary);
         if (employees.size() >= maxEmployeesNumber) {
             throw new EmployeeStorageIsFullException();     // если штат заполнен
         }
@@ -32,29 +32,29 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeToAdd;
     }
 
-    // удаление сотрудника
+    // удаление сотрудника по имени и фамилии
     public Employee deleteEmployee(String firstName, String lastName) {
-        Employee employeeToDelete = new Employee(firstName, lastName);
+        Employee employeeToDelete = findByName(firstName, lastName);
         if (!employees.containsValue(employeeToDelete)) {
             throw new EmployeeNotFoundException("Сотрудник " + firstName + " " + lastName + " не найден");
         }
         employees.remove(makeKey(firstName, lastName));
-        System.out.printf("Сотрудник '%s %s' удалён\n", employeeToDelete.getFirstName(), employeeToDelete.getLastName());
+        System.out.printf("Сотрудник '%s %s' удалён\n", firstName, lastName);
         return employeeToDelete;
     }
 
-    // поиск сотрудника поимени и фамилии
+    // поиск сотрудника по имени и фамилии
     public Employee findByName(String firstName, String lastName) {
-        Employee employeeToFind = new Employee(firstName, lastName);
-        if (employees.containsValue(employeeToFind)) {
-            return employeeToFind;
+        String employeeToFind = makeKey(firstName, lastName);
+        if (employees.containsKey(employeeToFind)) {
+            System.out.printf("Найден сотрудник: '%s %s' \n", firstName, lastName);
+            return employees.get(employeeToFind);
         }
         throw new EmployeeNotFoundException("Сотрудник " + firstName + " " + lastName + " не найден");
     }
 
     // вывод на экран полного списка сотрудников
     public List<Employee> printEmployeeList() {
-        List<Employee> result = new ArrayList<>(employees.values());
-        return result;
+        return new ArrayList<>(employees.values());
     }
 }
