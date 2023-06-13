@@ -25,16 +25,31 @@ public class DepartmentController {
         return departmentService.findMinSalary(departmentID);
     }
 
+    // вычисление расходов на зарплату всех сотрудников в отделе
     @GetMapping("/max-salary")
     public Employee findMaxSalary(@RequestParam("departmentID") int departmentID) {
         return departmentService.findMaxSalary(departmentID);
     }
 
+    // вычисление расходов на зарплату всех сотрудников в штате
+    @GetMapping("/salaryexpenses")
+    public long countSalaryExpenses() {
+        return departmentService.countSalaryExpenses();
+    }
+
+    // вычисление расходов на зарплату всех сотрудников в отделе
+    @GetMapping(value = "/salaryexpenses", params = "departmentID")
+    public long countSalaryExpenses(@RequestParam("departmentID") int departmentID) {
+        return departmentService.countSalaryExpenses(departmentID);
+    }
+
+    // вывод всех сотрудников в отделе
     @GetMapping(value = "/all", params = "departmentID")
     public List<Employee> getAll(@RequestParam("departmentID") int departmentID) {
         return departmentService.getAll(departmentID);
     }
 
+    // вывод всех сотрудников в штате
     @GetMapping("/all")
     public Map<Integer, List<Employee>> getAll() {
         return departmentService.getAll();

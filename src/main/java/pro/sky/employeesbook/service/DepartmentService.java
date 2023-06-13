@@ -42,13 +42,24 @@ public class DepartmentService {
         return employeeWithMinSalary;
     }
 
+    public long countSalaryExpenses() {
+        return employeeService.printEmployeeList().stream().mapToLong(Employee::getSalary).sum();
+    }
+
+    public long countSalaryExpenses(int department) {
+        long sum = employeeService.printEmployeeList().stream()
+                .filter(employee -> employee.getDepartment() == department).mapToInt(Employee::getSalary).sum();
+        System.out.printf("Сумма расходов на зарплату в отделе №%s равна %s\n", department, sum);
+        return sum;
+    }
+
     public List<Employee> getAll(int department) {
         return employeeService.printEmployeeList().stream()
                 .filter(employee -> employee.getDepartment() == department)
                 .collect(Collectors.toList());
     }
 
-    public Map<Integer, List< Employee>> getAll(){
+    public Map<Integer, List<Employee>> getAll() {
         return employeeService.printEmployeeList().stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment));
     }
