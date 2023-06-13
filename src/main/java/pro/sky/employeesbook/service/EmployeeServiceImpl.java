@@ -53,8 +53,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         throw new EmployeeNotFoundException("Сотрудник " + firstName + " " + lastName + " не найден");
     }
 
-    // вывод на экран полного списка сотрудников
-    public List<Employee> printEmployeeList() {
+    // создание полного списка сотрудников
+    public List<Employee> findAll() {
         return new ArrayList<>(employees.values());
     }
 }

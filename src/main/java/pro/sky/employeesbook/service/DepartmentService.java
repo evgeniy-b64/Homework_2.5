@@ -18,7 +18,7 @@ public class DepartmentService {
 
     // поиск сотрудника с максимальной зарплатой в заданном отделе
     public Employee findMaxSalary(int department) {
-        Employee employeeWithMaxSalary = employeeService.printEmployeeList().stream()
+        Employee employeeWithMaxSalary = employeeService.findAll().stream()
                 .filter(employee -> employee.getDepartment() == department)
                 .max(Comparator.comparingInt(Employee::getSalary))
                 .orElseThrow(EmployeeNotFoundException::new);
@@ -31,7 +31,7 @@ public class DepartmentService {
 
     // поиск сотрудника с минимальной зарплатой в заданном отделе
     public Employee findMinSalary(int department) {
-        Employee employeeWithMinSalary = employeeService.printEmployeeList().stream()
+        Employee employeeWithMinSalary = employeeService.findAll().stream()
                 .filter(employee -> employee.getDepartment() == department)
                 .min(Comparator.comparingInt(Employee::getSalary))
                 .orElseThrow(EmployeeNotFoundException::new);
@@ -43,24 +43,39 @@ public class DepartmentService {
     }
 
     public long countSalaryExpenses() {
-        return employeeService.printEmployeeList().stream().mapToLong(Employee::getSalary).sum();
+        return employeeService.findAll().stream().mapToLong(Employee::getSalary).sum();
     }
 
     public long countSalaryExpenses(int department) {
-        long sum = employeeService.printEmployeeList().stream()
+        long sum = employeeService.findAll().stream()
                 .filter(employee -> employee.getDepartment() == department).mapToInt(Employee::getSalary).sum();
         System.out.printf("Сумма расходов на зарплату в отделе №%s равна %s\n", department, sum);
         return sum;
     }
 
     public List<Employee> getAll(int department) {
-        return employeeService.printEmployeeList().stream()
+        return employeeService.findAll().stream()
                 .filter(employee -> employee.getDepartment() == department)
                 .collect(Collectors.toList());
     }
 
     public Map<Integer, List<Employee>> getAll() {
-        return employeeService.printEmployeeList().stream()
+        return employeeService.findAll().stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment));
+    }
+
+    // поиск сотрудников с зарплатой ниже указанной
+    public List<Employee> findAllBelow(int salary){
+        return employeeService.findAll().stream()
+                .filter(employee -> employee.getSalary() < salary)
+                .collect(Collectors.toList());
+    }
+
+    // поиск сотрудников отдела с зарплатой ниже указанной
+    public List<Employee> findAllBelow(int department, int salary){
+        return employeeService.findAll().stream()
+                .filter(employee -> employee.getDepartment() == department)
+                .filter(employee -> employee.getSalary() < salary)
+                .collect(Collectors.toList());
     }
 }

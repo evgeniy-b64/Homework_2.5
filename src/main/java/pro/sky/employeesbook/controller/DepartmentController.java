@@ -54,4 +54,16 @@ public class DepartmentController {
     public Map<Integer, List<Employee>> getAll() {
         return departmentService.getAll();
     }
+
+    // вывод сотрудников с зарплатой ниже указанной
+    @GetMapping("/allbelow")
+    public List<Employee> allBelow(@RequestParam("salary") int salary) {
+        return departmentService.findAllBelow(salary);
+    }
+
+    // вывод сотрудников отдела с зарплатой ниже указанной
+    @GetMapping(value = "/allbelow", params = "departmentID")
+    public List<Employee> allBelow(@RequestParam("departmentID") int departmentID, @RequestParam("salary") int salary) {
+        return departmentService.findAllBelow(departmentID, salary);
+    }
 }

@@ -11,5 +11,5 @@ public interface EmployeeService {
 
     Employee addEmployee(String firstName, String lastName, int department, int salary);
 
-    List<Employee> printEmployeeList();
+    List<Employee> findAll();
 }
