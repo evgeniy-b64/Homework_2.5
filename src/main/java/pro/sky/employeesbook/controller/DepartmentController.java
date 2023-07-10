@@ -20,12 +20,13 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
+    // поиск сотрудников  с минимальной зарплатой в отделе
     @GetMapping("/min-salary")
     public Employee findMinSalary(@RequestParam("departmentID") int departmentID) {
         return departmentService.findMinSalary(departmentID);
     }
 
-    // вычисление расходов на зарплату всех сотрудников в отделе
+    // поиск сотрудников  с максимальной зарплатой в отделе
     @GetMapping("/max-salary")
     public Employee findMaxSalary(@RequestParam("departmentID") int departmentID) {
         return departmentService.findMaxSalary(departmentID);
