@@ -51,22 +51,20 @@ public class Employee {
     public int getSalary() {
         return salary;
     }
-/*
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-*/
-/*    public void setLastName(String lastName) {
+
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-*/
-  /*  public void setDepartment(int department) {
+
+    public void setDepartment(int department) {
         this.department = department;
     }
-*/
-  /*  public void setSalary(int salary) {
+
+    public void setSalary(int salary) {
         this.salary = salary;
     }
-
-   */
 }

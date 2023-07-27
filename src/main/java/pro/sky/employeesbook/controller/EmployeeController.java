@@ -8,6 +8,7 @@ import pro.sky.employeesbook.model.Employee;
 import pro.sky.employeesbook.service.EmployeeService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -39,6 +40,11 @@ public class EmployeeController {
     @GetMapping("/printEmployeeList")
     public List<Employee> printEmployeeList() {
         return employeeService.findAll();
+    }
+
+    @GetMapping("/autofill")
+    public Map<String, Employee> autofillEmployeeList() {
+        return employeeService.autofill();
     }
 
 }

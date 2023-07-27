@@ -1,9 +1,6 @@
 package pro.sky.employeesbook.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pro.sky.employeesbook.model.Employee;
 import pro.sky.employeesbook.service.DepartmentService;
 
@@ -11,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/departments")
+@RequestMapping("/department")
 public class DepartmentController {
 
     private final DepartmentService departmentService;
@@ -20,50 +17,51 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @GetMapping("/min-salary")
-    public Employee findMinSalary(@RequestParam("departmentID") int departmentID) {
-        return departmentService.findMinSalary(departmentID);
+    // возвращает минимальную зарплату по департаменту
+    @GetMapping("{id}/salary/min")
+    public Integer findMinSalary(@PathVariable Integer id) {
+        return departmentService.findMinSalary(id);
     }
 
-    // вычисление расходов на зарплату всех сотрудников в отделе
-    @GetMapping("/max-salary")
-    public Employee findMaxSalary(@RequestParam("departmentID") int departmentID) {
-        return departmentService.findMaxSalary(departmentID);
+    // возвращает максимальную зарплату по департаменту
+    @GetMapping("{id}/salary/max")
+    public Integer findMaxSalary(@PathVariable Integer id) {
+        return departmentService.findMaxSalary(id);
     }
 
     // вычисление расходов на зарплату всех сотрудников в штате
-    @GetMapping("/salaryexpenses")
-    public long countSalaryExpenses() {
+    @GetMapping("/salary/sum")
+    public long sum() {
         return departmentService.countSalaryExpenses();
     }
 
-    // вычисление расходов на зарплату всех сотрудников в отделе
-    @GetMapping(value = "/salaryexpenses", params = "departmentID")
-    public long countSalaryExpenses(@RequestParam("departmentID") int departmentID) {
-        return departmentService.countSalaryExpenses(departmentID);
+    // возвращает сумму зарплат по департаменту
+    @GetMapping(value = "{id}/salary/sum")
+    public long sum(@PathVariable int id) {
+        return departmentService.countSalaryExpenses(id);
     }
 
-    // вывод всех сотрудников в отделе
-    @GetMapping(value = "/all", params = "departmentID")
-    public List<Employee> getAll(@RequestParam("departmentID") int departmentID) {
-        return departmentService.getAll(departmentID);
+    // возвращает список сотрудников по департаменту
+    @GetMapping("{id}/employees")
+    public List<Employee> employees(@PathVariable Long id) {
+        return departmentService.getAll(id);
     }
 
-    // вывод всех сотрудников в штате
-    @GetMapping("/all")
-    public Map<Integer, List<Employee>> getAll() {
+    // возвращает сотрудников, сгруппированых по отделам
+    @GetMapping("/employees")
+    public Map<Integer, List<Employee>> employees() {
         return departmentService.getAll();
     }
 
-    // вывод сотрудников с зарплатой ниже указанной
+    // вывод сотрудников компании с зарплатой ниже указанной
     @GetMapping("/allbelow")
     public List<Employee> allBelow(@RequestParam("salary") int salary) {
         return departmentService.findAllBelow(salary);
     }
 
     // вывод сотрудников отдела с зарплатой ниже указанной
-    @GetMapping(value = "/allbelow", params = "departmentID")
-    public List<Employee> allBelow(@RequestParam("departmentID") int departmentID, @RequestParam("salary") int salary) {
-        return departmentService.findAllBelow(departmentID, salary);
+    @GetMapping(value = "{id}/allbelow")
+    public List<Employee> allBelow(@PathVariable Long id, @RequestParam("salary") int salary) {
+        return departmentService.findAllBelow(id, salary);
     }
 }
