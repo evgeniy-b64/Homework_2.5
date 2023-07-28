@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EmployeeServiceImplTest {
 
-    private final String testFirstName = "FirstName";
-    private final String testLastName = "LastName";
+    private final String testFirstName = "Firstname";
+    private final String testLastName = "Lastname";
     private final int testDepartment = 1;
     private final int testSalary = 10000;
     private final Employee testDummy = new Employee(testFirstName, testLastName, testDepartment, testSalary);
